@@ -18,7 +18,15 @@ g <- graphparse::read_qpgraph(test_graph)
 plot(g)
 #> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
 #>          - increase MaxFunEvals option.
-#>          Current function value: 4415.55067105093
+#>          Current function value: 6037.50667936922
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+``` r
+attr(g, "admixture_proportions")
+#>                     K2_K                     P2_P     AdmixedNonAfr_AfrAnc 
+#>                      0.5                      0.5                      0.5 
+#> DenisovaAncAnc_SuperArch 
+#>                      0.5
+```

@@ -32,3 +32,6 @@ g <- graphparse::read_qpgraph(test_graph)
 plot(g)
 ```
 
+```{r}
+attr(g, "admixture_proportions")
+```

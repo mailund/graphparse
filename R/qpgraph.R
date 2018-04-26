@@ -112,16 +112,32 @@ qp_get_nodes <- function(edges) {
     list(inner_nodes = inner_nodes, leaves = leaves)
 }
 
+#' @import matchbox
+qp_get_admixture_proportions <- function(graph_info) {
+    children <- llmap(graph_info$admixtures, . %>% .[1]) %>% as.vector
+    parents <- llmap(graph_info$admixtures, . %>% .[2]) %>% as.vector
+    props <- llmap(graph_info$admixtures, . %>% .[4]) %>%
+        as.vector %>% as.numeric
+    prop_vars <- paste0(children, "_", parents)
+
+    names(props) <- prop_vars
+    props
+}
+
 #' Import a qpGraph file into an admixturegraph object
 #'
 #' @param text Text containing the graph description.
 #' @return An admixturegraph object
+#' @import admixturegraph
 #' @export
 read_qpgraph <- function(text) {
     graph_info <- qp_parse_graph(text)
     edges <- qp_get_edges(graph_info)
     nodes <- qp_get_nodes(edges)
-    admixturegraph::agraph(nodes$leaves, nodes$inner_nodes, edges)
+    admix_props <- qp_get_admixture_proportions(graph_info)
+    graph <- agraph(nodes$leaves, nodes$inner_nodes, edges)
+    attr(graph, "admixture_proportions") <- admix_props
+    graph
 }
 
 
