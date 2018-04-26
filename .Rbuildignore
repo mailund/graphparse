@@ -1,0 +1,5 @@
+^graphparse\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^experiments\.R$
+^README\.Rmd$

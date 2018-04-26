@@ -1,0 +1,18 @@
+Package: graphparse
+Version: 0.0.0.9000
+Title: Parsers for Admixture Graph Formats
+Description: Implements parsers for reading in admixture graphs.
+Authors@R: person("Thomas", "Mailund", , "mailund@birc.au.dk", c("aut", "cre"))
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Depends:
+    admixturegraph,
+    minilexer,
+    pmatch,
+    matchbox
+Remotes:
+    bitbucket::coolbutuseless/minilexer,
+    github::mailund/matchbox
+RoxygenNote: 6.0.1
