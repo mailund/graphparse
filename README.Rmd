@@ -25,10 +25,23 @@ devtools::install_github("mailund/graphparse")
 
 ## Example
 
+Parsing a qpGraph file:
 
-```{r example}
+```{r pqgraph}
 test_graph <- readr::read_file("data-raw/Basic_OngeEA_wArch.graph")
 g <- graphparse::read_qpgraph(test_graph)
+plot(g)
+```
+
+```{r}
+attr(g, "admixture_proportions")
+```
+
+Parsing a dot file:
+
+```{r dot}
+test_graph <- readr::read_file("data-raw/Basic_OngeEA_wArch.dot")
+g <- graphparse::read_dot(test_graph)
 plot(g)
 ```
 

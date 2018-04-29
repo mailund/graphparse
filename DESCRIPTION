@@ -8,10 +8,14 @@ Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 Depends:
+    dplyr,
+    tibble,
     admixturegraph,
     minilexer,
     pmatch,
-    matchbox
+    matchbox (>= 0.0.0.9004)
+Suggests:
+    reader
 Remotes:
     bitbucket::coolbutuseless/minilexer,
     github::mailund/matchbox

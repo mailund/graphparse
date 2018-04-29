@@ -82,14 +82,14 @@ qp_get_edges <- function(graph_info) {
     dim(tbl) <- c(n, 3)
 
     idx <- 1 ; e <- graph_info$edges
-    while(!is_llist_empty(e)) {
+    while(!ll_is_nil(e)) {
         tbl[idx,] <- e$car
         e <- e$cdr
         idx <- idx + 1
     }
 
     a <- graph_info$admixtures
-    while(!is_llist_empty(a)) {
+    while(!ll_is_nil(a)) {
         bind[child,parent1,parent2,.] <- a$car
 
         prop <- paste0(child, "_", parent1)
