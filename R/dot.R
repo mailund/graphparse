@@ -181,7 +181,8 @@ read_dot <- function(text) {
     }
     admixture_vars <- admixture_vars %>% as.vector()
     admixture_props <- admixture_props %>% as.vector()
-    names(admixture_props) <- admixture_vars
+    if (length(admixture_props) > 0)
+        names(admixture_props) <- admixture_vars
 
     g <- agraph(leaves, inner_nodes, edges_tbl)
     attr(g, "admixture_proportions") <- admixture_props

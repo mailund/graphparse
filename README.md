@@ -18,9 +18,7 @@ Parsing a qpGraph file:
 test_graph <- readr::read_file("data-raw/Basic_OngeEA_wArch.graph")
 g <- graphparse::read_qpgraph(test_graph)
 plot(g)
-#> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
-#>          - increase MaxFunEvals option.
-#>          Current function value: 4411.21184093304
+#> fminbnd:  Exiting: No possible improvement of cost function.
 ```
 
 <img src="man/figures/README-pqgraph-1.png" width="100%" />
@@ -41,7 +39,7 @@ g <- graphparse::read_dot(test_graph)
 plot(g)
 #> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
 #>          - increase MaxFunEvals option.
-#>          Current function value: 9811.09667284432
+#>          Current function value: 9791.47157921373
 ```
 
 <img src="man/figures/README-dot-1.png" width="100%" />
@@ -52,4 +50,17 @@ attr(g, "admixture_proportions")
 #>                 0.49                 0.03                 0.01 
 #>       DenisovaAnc_P2 
 #>                 0.03
+```
+
+``` r
+test_graph <- readr::read_file("data-raw/test1.graph")
+g <- graphparse::read_qpgraph(test_graph)
+plot(g)
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+``` r
+attr(g, "admixture_proportions")
+#> numeric(0)
 ```
