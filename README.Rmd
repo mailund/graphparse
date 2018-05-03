@@ -55,3 +55,12 @@ g <- graphparse::read_qpgraph(test_graph)
 plot(g)
 attr(g, "admixture_proportions")
 ```
+
+
+
+```{r}
+test_graph <- readr::read_file("data-raw/BosGraph.dot")
+g <- graphparse::read_dot(test_graph)
+plot(g)
+```
+
