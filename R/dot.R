@@ -177,7 +177,6 @@ read_dot <- function(text) {
     admixture_props <- NIL
     for (node in admixture_nodes) {
         edges <- edges_df %>% filter(to == node) %>% head()
-        print(edges)
         stopifnot(nrow(edges) == 2)
         e1 <- edges[1,]
         e2 <- edges[2,]
