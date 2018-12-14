@@ -17,6 +17,6 @@ Depends:
 Suggests:
     reader
 Remotes:
-    bitbucket::coolbutuseless/minilexer,
+    github::coolbutuseless/minilexer,
     github::mailund/matchbox
 RoxygenNote: 6.0.1
