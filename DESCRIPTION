@@ -12,7 +12,8 @@ Depends:
     tibble,
     admixturegraph,
     minilexer,
-    pmatch
+    pmatch,
+    magrittr
 Suggests:
     readr
 Remotes:
