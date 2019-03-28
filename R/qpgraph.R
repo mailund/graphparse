@@ -71,8 +71,17 @@ qp_parse_graph <- function(text) {
     list(root = root, edges = edges, admixtures = admixtures)
 }
 
-#' @import matchbox
-#' @import pmatch
+llength <- case_trfunc(acc = 0,
+                       NIL -> acc,
+                       CONS(car, cdr) -> llength(cdr, acc + 1)
+)
+
+ll_is_nil <- pmatch::case_trfunc(
+    NIL -> TRUE,
+    . -> FALSE
+)
+
+
 qp_get_edges <- function(graph_info) {
     no_edges <- llength(graph_info$edges)
     no_admixtures <- llength(graph_info$admixtures)
@@ -112,7 +121,15 @@ qp_get_nodes <- function(edges) {
     list(inner_nodes = inner_nodes, leaves = leaves)
 }
 
-#' @import matchbox
+llrev <- case_trfunc(acc = NIL,
+                     NIL -> acc,
+                     CONS(car, cdr) -> llrev(cdr, CONS(car, acc))
+)
+llmap <- case_trfunc(f, acc = NIL,
+    NIL -> llrev(acc),
+    CONS(car, cdr) -> llmap(cdr, f, CONS(f(car), acc))
+)
+
 qp_get_admixture_proportions <- function(graph_info) {
     children <- llmap(graph_info$admixtures, . %>% .[1]) %>% as.vector
     parents <- llmap(graph_info$admixtures, . %>% .[2]) %>% as.vector
