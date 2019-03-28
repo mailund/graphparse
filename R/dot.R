@@ -1,5 +1,4 @@
 
-#' @import matchbox
 dot_parse_graph <- function(text) {
     lexer <- c(
         digraph        = "digraph",
@@ -107,7 +106,6 @@ dot_parse_graph <- function(text) {
     edges
 }
 
-#' @import matchbox
 dot_get_edges <- function(edges) {
     no_edges <- llength(edges)
     tbl <- character(length = no_edges * 3)
@@ -131,7 +129,6 @@ dot_get_edges <- function(edges) {
 #' @return An admixturegraph object
 #' @import admixturegraph
 #' @import dplyr
-#' @import matchbox
 #' @import tibble
 #' @export
 read_dot <- function(text) {

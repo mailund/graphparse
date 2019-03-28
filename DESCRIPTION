@@ -17,4 +17,4 @@ Suggests:
     readr
 Remotes:
     github::mailund/minilexer,
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

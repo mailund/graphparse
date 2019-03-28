@@ -18,7 +18,9 @@ Parsing a qpGraph file:
 test_graph <- readr::read_file("data-raw/Basic_OngeEA_wArch.graph")
 g <- graphparse::read_qpgraph(test_graph)
 plot(g)
-#> fminbnd:  Exiting: No possible improvement of cost function.
+#> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
+#>          - increase MaxFunEvals option.
+#>          Current function value: 4498.90111965144
 ```
 
 <img src="man/figures/README-pqgraph-1.png" width="100%" />
@@ -36,30 +38,10 @@ Parsing a dot file:
 ``` r
 test_graph <- readr::read_file("data-raw/Basic_OngeEA_wArch.dot")
 g <- graphparse::read_dot(test_graph)
-#> # A tibble: 2 x 3
-#>   from        to    label    
-#>   <chr>       <chr> <chr>    
-#> 1 DenisovaAnc P2    "\"3%\"" 
-#> 2 P           P2    "\"97%\""
-#> # A tibble: 2 x 3
-#>   from   to    label    
-#>   <chr>  <chr> <chr>    
-#> 1 NeaAnc K2    "\"1%\"" 
-#> 2 K      K2    "\"99%\""
-#> # A tibble: 2 x 3
-#>   from   to            label    
-#>   <chr>  <chr>         <chr>    
-#> 1 NeaAnc AdmixedNonAfr "\"3%\"" 
-#> 2 AfrAnc AdmixedNonAfr "\"97%\""
-#> # A tibble: 2 x 3
-#>   from      to             label    
-#>   <chr>     <chr>          <chr>    
-#> 1 Arch      DenisovaAncAnc "\"49%\""
-#> 2 SuperArch DenisovaAncAnc "\"51%\""
 plot(g)
 #> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
 #>          - increase MaxFunEvals option.
-#>          Current function value: 9400.95285288696
+#>          Current function value: 9425.28944643173
 ```
 
 <img src="man/figures/README-dot-1.png" width="100%" />
@@ -88,15 +70,10 @@ attr(g, "admixture_proportions")
 ``` r
 test_graph <- readr::read_file("data-raw/BosGraph.dot")
 g <- graphparse::read_dot(test_graph)
-#> # A tibble: 2 x 3
-#>   from  to    label    
-#>   <chr> <chr> <chr>    
-#> 1 H2    E2    "\"15%\""
-#> 2 D2    E2    "\"85%\""
 plot(g)
 #> fminbnd:  Exiting: Maximum number of function evaluations has been exceeded
 #>          - increase MaxFunEvals option.
-#>          Current function value: 7034.41173643302
+#>          Current function value: 7212.04015629442
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />

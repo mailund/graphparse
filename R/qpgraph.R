@@ -1,5 +1,6 @@
 
-#' @import matchbox
+llist := CONS(car, cdr) | NIL
+
 qp_parse_graph <- function(text) {
     tokens <- c(
         root        = "root",
@@ -71,7 +72,7 @@ qp_parse_graph <- function(text) {
     list(root = root, edges = edges, admixtures = admixtures)
 }
 
-llength <- case_trfunc(acc = 0,
+llength <- pmatch::case_trfunc(acc = 0,
                        NIL -> acc,
                        CONS(car, cdr) -> llength(cdr, acc + 1)
 )
@@ -99,8 +100,11 @@ qp_get_edges <- function(graph_info) {
 
     a <- graph_info$admixtures
     while(!ll_is_nil(a)) {
-        bind[child,parent1,parent2,.] <- a$car
-
+        #pmatch::bind[child,parent1,parent2,.] <- a$car
+        x <- a$car
+        child = x[1]
+        parent1 = x[2]
+        parent2 = x[3]
         prop <- paste0(child, "_", parent1)
         other_prop <- paste0("(1 - ", prop, ")")
 
@@ -121,11 +125,11 @@ qp_get_nodes <- function(edges) {
     list(inner_nodes = inner_nodes, leaves = leaves)
 }
 
-llrev <- case_trfunc(acc = NIL,
+llrev <- pmatch::case_trfunc(acc = NIL,
                      NIL -> acc,
                      CONS(car, cdr) -> llrev(cdr, CONS(car, acc))
 )
-llmap <- case_trfunc(f, acc = NIL,
+llmap <- pmatch::case_trfunc(f, acc = NIL,
     NIL -> llrev(acc),
     CONS(car, cdr) -> llmap(cdr, f, CONS(f(car), acc))
 )
