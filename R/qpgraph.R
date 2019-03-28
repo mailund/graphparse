@@ -120,7 +120,8 @@ qp_get_admixture_proportions <- function(graph_info) {
         as.vector %>% as.numeric
     prop_vars <- paste0(children, "_", parents)
 
-    names(props) <- prop_vars
+    if (length(props) > 0)
+        names(props) <- prop_vars
     props
 }
 
