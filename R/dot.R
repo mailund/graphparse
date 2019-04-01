@@ -68,7 +68,7 @@ dot_parse_graph <- function(text) {
         error = reset(pos))
     }
 
-    edges <- NIL
+    edges <- list()
     parse_edge <- function() {
         pos <- lexer$position
         tryCatch({
@@ -80,7 +80,7 @@ dot_parse_graph <- function(text) {
             label <- ifelse(!is.null(attribs[["label"]]),
                             attribs[["label"]], NA)
             edge <- c(from = from, to = to, label = label)
-            edges <<- CONS(edge, edges)
+            edges[[length(edges) + 1]] <<- edge
             return(TRUE)
         },
         error = reset(pos))
@@ -107,18 +107,15 @@ dot_parse_graph <- function(text) {
 }
 
 dot_get_edges <- function(edges) {
-    no_edges <- llength(edges)
+    no_edges <- length(edges)
     tbl <- character(length = no_edges * 3)
     dim(tbl) <- c(no_edges, 3)
 
-    idx <- 1 ; e <- edges
-    while (!ll_is_nil(e)) {
-        tbl[idx,] <- e$car
-        e <- e$cdr
-        idx <- idx + 1
+    for (i in seq_along(edges)) {
+        tbl[i,] <- edges[[i]]
     }
-
     colnames(tbl) <- c("from", "to", "label")
+
     tbl
 }
 
@@ -170,8 +167,8 @@ read_dot <- function(text) {
     edges_tbl[,3] <- NA
     colnames(edges_tbl) <- c("child", "parent", "prop")
 
-    admixture_vars <- NIL
-    admixture_props <- NIL
+    admixture_vars <- c()
+    admixture_props <- c()
     for (node in admixture_nodes) {
         edges <- edges_df %>% filter(to == node) %>% head()
         stopifnot(nrow(edges) == 2)
@@ -185,8 +182,8 @@ read_dot <- function(text) {
         edges_tbl[edges_tbl[,"parent"] == e1$from & edges_tbl[,"child"] == e1$to,3] <- e1_label
         edges_tbl[edges_tbl[,"parent"] == e2$from & edges_tbl[,"child"] == e2$to,3] <- e2_label
 
-        admixture_vars <- CONS(admix_param, admixture_vars)
-        admixture_props <- CONS(admix_prop, admixture_props)
+        admixture_vars[[length(admixture_vars) + 1]] <- admix_param
+        admixture_props[[length(admixture_props) + 1]] <- admix_prop
     }
 
     admixture_vars <- admixture_vars %>% as.vector()

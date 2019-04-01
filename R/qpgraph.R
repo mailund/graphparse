@@ -1,5 +1,4 @@
 
-llist := CONS(car, cdr) | NIL
 
 qp_parse_graph <- function(text) {
     tokens <- c(
@@ -21,8 +20,8 @@ qp_parse_graph <- function(text) {
     lexer <- minilexer::TokenStream$new(token_stream)
 
     root <- NULL
-    edges <- NIL
-    admixtures <- NIL
+    edges <- list()
+    admixtures <- list()
 
     parse_root <- function() {
         lexer$consume_token(type = "root")
@@ -41,7 +40,7 @@ qp_parse_graph <- function(text) {
         parent <- lexer$consume_token(type = "name")
         child <- lexer$consume_token(type = "name")
         edge <- c(child = child, parent = parent, NA)
-        edges <<- CONS(edge, edges)
+        edges[[length(edges) + 1]] <<- edge
     }
 
     parse_admixture <- function() {
@@ -57,7 +56,7 @@ qp_parse_graph <- function(text) {
             parent_2 = parent_2,
             alpha = as.numeric(alpha) / 100 # from percentages to fractions
         )
-        admixtures <<- CONS(admixture, admixtures)
+        admixtures[[length(admixtures) + 1]] <<- admixture
     }
 
     while (!lexer$end_of_stream) {
@@ -72,50 +71,29 @@ qp_parse_graph <- function(text) {
     list(root = root, edges = edges, admixtures = admixtures)
 }
 
-llength <- pmatch::case_trfunc(acc = 0,
-                       NIL -> acc,
-                       CONS(car, cdr) -> llength(cdr, acc + 1)
-)
-
-ll_is_nil <- pmatch::case_trfunc(
-    NIL -> TRUE,
-    . -> FALSE
-)
-
-
 qp_get_edges <- function(graph_info) {
-    no_edges <- llength(graph_info$edges)
-    no_admixtures <- llength(graph_info$admixtures)
+    edges <- graph_info$edges
+    no_edges <- length(edges)
+    admixtures <- graph_info$admixtures
+    no_admixtures <- length(admixtures)
 
     n <- no_edges + 2 * no_admixtures
     tbl <- character(length = n * 3)
     dim(tbl) <- c(n, 3)
 
-    idx <- 1 ; e <- graph_info$edges
-    while(!ll_is_nil(e)) {
-        tbl[idx,] <- e$car
-        e <- e$cdr
-        idx <- idx + 1
+    for (i in seq_along(edges)) {
+        tbl[i,] <- edges[[i]]
     }
-
-    a <- graph_info$admixtures
-    while(!ll_is_nil(a)) {
-        #pmatch::bind[child,parent1,parent2,.] <- a$car
-        x <- a$car
+    for (i in seq_along(admixtures)) {
+        x <- admixtures[[i]]
         child = x[1]
         parent1 = x[2]
         parent2 = x[3]
         prop <- paste0(child, "_", parent1)
         other_prop <- paste0("(1 - ", prop, ")")
-
-        tbl[idx,] <- c(child, parent1, prop)
-        idx <- idx + 1
-        tbl[idx,] <- c(child, parent2, other_prop)
-        idx <- idx + 1
-
-        a <- a$cdr
+        tbl[no_edges + 2*i - 1,] <- c(child, parent1, prop)
+        tbl[no_edges + 2*i,] <- c(child, parent2, other_prop)
     }
-
     tbl
 }
 
@@ -125,22 +103,20 @@ qp_get_nodes <- function(edges) {
     list(inner_nodes = inner_nodes, leaves = leaves)
 }
 
-llrev <- pmatch::case_trfunc(acc = NIL,
-                     NIL -> acc,
-                     CONS(car, cdr) -> llrev(cdr, CONS(car, acc))
-)
-llmap <- pmatch::case_trfunc(f, acc = NIL,
-    NIL -> llrev(acc),
-    CONS(car, cdr) -> llmap(cdr, f, CONS(f(car), acc))
-)
 
 qp_get_admixture_proportions <- function(graph_info) {
-    children <- llmap(graph_info$admixtures, . %>% .[1]) %>% as.vector
-    parents <- llmap(graph_info$admixtures, . %>% .[2]) %>% as.vector
-    props <- llmap(graph_info$admixtures, . %>% .[4]) %>%
-        as.vector %>% as.numeric
-    prop_vars <- paste0(children, "_", parents)
 
+    admixtures <- graph_info$admixtures
+    children <- c() ; parents <- c() ; props <- c()
+
+    for (i in seq_along(admixtures)) {
+        vars <- admixtures[[i]]
+        children[length(children) + 1] <- vars["admixed"]
+        parents[length(parents) + 1] <- vars["parent_1"]
+        props[length(props) + 1] <- as.numeric(vars["alpha"])
+
+    }
+    prop_vars <- paste0(children, "_", parents)
     if (length(props) > 0)
         names(props) <- prop_vars
     props

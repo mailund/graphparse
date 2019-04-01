@@ -12,7 +12,6 @@ Depends:
     tibble,
     admixturegraph,
     minilexer,
-    pmatch,
     magrittr
 Suggests:
     readr
